@@ -259,6 +259,7 @@ def build_hover(site: str, meta: dict, profile: dict, now: datetime) -> str:
         r for r in rows
         if r.speed_mps is not None and r.direction_deg is not None
     ]
+    valid_rows.sort(key=lambda r: r.height_km, reverse=True)
 
     lines = [
         f"KSC 915 MHz Wind Profiler {site}",
@@ -268,7 +269,7 @@ def build_hover(site: str, meta: dict, profile: dict, now: datetime) -> str:
         f"Site elevation: {meta['elev_m'] * 3.280839895:.0f} ft MSL",
         f"Valid levels: {len(valid_rows)} / {len(rows)}",
         "",
-        "HEIGHT       WIND",
+        "HEIGHT       WIND",  # top of atmosphere first; lowest level appears at bottom
     ]
 
     for r in valid_rows:
@@ -294,7 +295,7 @@ def build_placefile(rows: list[Row], sites: dict, now: datetime):
         "; KSC 915 MHz Doppler Radar Wind Profilers",
         "RefreshSeconds: 60",
         "Threshold: 300",
-        f'IconFile: 1, 64, 64, 32, 32, "{ICON_URL}"',
+        f'IconFile: 1, 32, 32, 16, 16, "{ICON_URL}"',
         'Font: 1, 11, 1, "Arial"',
         "; Hover each profiler marker for the latest vertical wind profile.",
         "; Height displayed in feet; speed displayed in knots.",
