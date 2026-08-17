@@ -1,0 +1,73 @@
+name: Update KSC 915 MHz Profiler Placefile
+
+on:
+  workflow_dispatch:
+  schedule:
+    # KSC profiler estimates are nominally produced every 15 minutes.
+    # Poll every 5 minutes so a newly published profile is picked up promptly.
+    - cron: "1,6,11,16,21,26,31,36,41,46,51,56 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ksc-915mhz-profiler-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate profiler placefile
+        env:
+          LOOKBACK_MINUTES: "120"
+          STALE_MINUTES: "180"
+          KSC_PROFILER_RESULT_URL: ${{ secrets.KSC_PROFILER_RESULT_URL }}
+        run: python src/ksc_915mhz_profiler_placefile.py
+
+      - name: Commit updated profiler output
+        shell: bash
+        run: |
+          set -e
+          git config user.name "ksc-profiler-bot"
+          git config user.email "actions@users.noreply.github.com"
+
+          git add \
+            docs/ksc_915mhz_profilers.txt \
+            docs/ksc_915mhz_profilers.json \
+            docs/profiler_915_icon.png \
+            docs/ksc_915mhz_profiler_sites.csv
+
+          if git diff --cached --quiet; then
+            echo "No profiler placefile change"
+            exit 0
+          fi
+
+          git commit -m "Update KSC 915 MHz profiler observations"
+
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Push attempt ${attempt} failed; retrying..."
+            git rebase --abort || true
+            sleep $((attempt * 5))
+          done
+
+          echo "Unable to push updated profiler files after 3 attempts."
+          exit 1
