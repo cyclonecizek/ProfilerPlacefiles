@@ -1,11 +1,11 @@
 {
-  "generated_utc": "2026-08-21T13:53:26.332756+00:00",
+  "generated_utc": "2026-08-21T14:23:11.666520+00:00",
   "rows_parsed": 1010,
   "profiles": [
     {
       "site": "RWP0002",
       "name": "False Cape",
-      "observation_utc": "2026-08-21T13:00:00+00:00",
+      "observation_utc": "2026-08-21T13:30:00+00:00",
       "age_minutes": 53,
       "rows_in_profile": 50,
       "valid_wind_levels": 49
@@ -13,26 +13,26 @@
     {
       "site": "RWP0003",
       "name": "Merritt Island",
-      "observation_utc": "2026-08-21T13:00:00+00:00",
+      "observation_utc": "2026-08-21T13:30:00+00:00",
+      "age_minutes": 53,
+      "rows_in_profile": 51,
+      "valid_wind_levels": 51
+    },
+    {
+      "site": "RWP0004",
+      "name": "Mosquito Lagoon",
+      "observation_utc": "2026-08-21T13:30:00+00:00",
       "age_minutes": 53,
       "rows_in_profile": 51,
       "valid_wind_levels": 48
     },
     {
-      "site": "RWP0004",
-      "name": "Mosquito Lagoon",
-      "observation_utc": "2026-08-21T13:00:00+00:00",
-      "age_minutes": 53,
-      "rows_in_profile": 51,
-      "valid_wind_levels": 49
-    },
-    {
       "site": "RWP0005",
       "name": "Ti-Co / Space Coast Regional Airport",
-      "observation_utc": "2026-08-21T13:00:00+00:00",
+      "observation_utc": "2026-08-21T13:30:00+00:00",
       "age_minutes": 53,
       "rows_in_profile": 50,
-      "valid_wind_levels": 47
+      "valid_wind_levels": 49
     }
   ]
 }
