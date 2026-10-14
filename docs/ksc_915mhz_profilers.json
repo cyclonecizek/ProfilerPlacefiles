@@ -1,46 +1,46 @@
 {
-  "generated_utc": "2026-10-14T05:42:26.036136+00:00",
+  "generated_utc": "2026-10-14T10:37:05.198887+00:00",
   "rows_parsed": 1008,
   "profiles": [
     {
       "site": "RWP0001",
       "name": "South Cape",
-      "observation_utc": "2026-10-14T04:30:00+00:00",
-      "age_minutes": 72,
+      "observation_utc": "2026-10-14T09:30:00+00:00",
+      "age_minutes": 67,
       "rows_in_profile": 50,
-      "valid_wind_levels": 24
+      "valid_wind_levels": 26
     },
     {
       "site": "RWP0002",
       "name": "False Cape",
-      "observation_utc": "2026-10-14T04:30:00+00:00",
-      "age_minutes": 72,
+      "observation_utc": "2026-10-14T09:30:00+00:00",
+      "age_minutes": 67,
       "rows_in_profile": 50,
-      "valid_wind_levels": 27
+      "valid_wind_levels": 28
     },
     {
       "site": "RWP0003",
       "name": "Merritt Island",
-      "observation_utc": "2026-10-14T04:30:00+00:00",
-      "age_minutes": 72,
+      "observation_utc": "2026-10-14T09:30:00+00:00",
+      "age_minutes": 67,
       "rows_in_profile": 51,
-      "valid_wind_levels": 26
+      "valid_wind_levels": 33
     },
     {
       "site": "RWP0004",
       "name": "Mosquito Lagoon",
-      "observation_utc": "2026-10-14T04:30:00+00:00",
-      "age_minutes": 72,
+      "observation_utc": "2026-10-14T09:30:00+00:00",
+      "age_minutes": 67,
       "rows_in_profile": 51,
-      "valid_wind_levels": 28
+      "valid_wind_levels": 26
     },
     {
       "site": "RWP0005",
       "name": "Ti-Co / Space Coast Regional Airport",
-      "observation_utc": "2026-10-14T04:30:00+00:00",
-      "age_minutes": 72,
+      "observation_utc": "2026-10-14T09:30:00+00:00",
+      "age_minutes": 67,
       "rows_in_profile": 50,
-      "valid_wind_levels": 26
+      "valid_wind_levels": 28
     }
   ]
 }
