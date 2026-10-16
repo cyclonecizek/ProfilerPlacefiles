@@ -28,6 +28,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlparse
+from concurrent.futures import ThreadPoolExecutor
 
 import requests
 import urllib3
@@ -158,6 +159,78 @@ def fetch_export() -> str:
     )
 
 
+API_BASE = os.getenv("PROFILER_API_BASE_URL", "https://codiapi-915drwp.rad.spaceforce.mil").rstrip("/")
+
+
+def api_get(path, params):
+    for attempt in range(3):
+        try:
+            response = requests.get(API_BASE + path, params=params, timeout=30,
+                                    headers={"User-Agent": USER_AGENT, "Accept": "application/json"})
+            response.raise_for_status()
+            data = response.json()
+            if not isinstance(data, list) or not data:
+                raise ValueError("Profiler API returned no readings or an invalid response")
+            return data
+        except requests.exceptions.RequestException as exc:
+            status = exc.response.status_code if exc.response is not None else None
+            if attempt == 2 or (status is not None and status < 500 and status != 429):
+                raise
+            time.sleep(2 ** attempt)
+
+
+def parse_api(data):
+    if not isinstance(data, list):
+        raise ValueError("Profiler API response must be a JSON array")
+    rows = []
+    for item in data:
+        dt = datetime.fromisoformat(item["consensus_datetime"].replace("Z", "+00:00"))
+        dt = dt.replace(tzinfo=timezone.utc) if dt.tzinfo is None else dt.astimezone(timezone.utc)
+        height = fnum(item.get("altitude_km"))
+        site = str(item["drwp_identifier"]).strip().upper()
+        if height is None or not 0 <= height < 9999 or not site.startswith("RWP"):
+            continue
+        speed = fnum(item.get("wind_speed_mps"))
+        direction = fnum(item.get("wind_direction_deg"))
+        if speed is not None and (speed < 0 or speed >= 9999):
+            speed = None
+        if direction is not None and not 0 <= direction <= 360:
+            direction = None
+        rows.append(Row(dt, site, height, speed, direction))
+    if not rows:
+        raise ValueError("No valid profiler API rows parsed")
+    return rows
+
+
+def fetch_api_profiles(sites, now):
+    def fetch_site(site):
+        # /latest limits rows, so limit=60 can mix two profile times.
+        # Discover the newest time, then retrieve every gate at that exact time.
+        latest = parse_api(api_get("/915drwp/latest", {"drwp_identifier": site, "limit": 1}))
+        dt = max(r.dt for r in latest)
+        age = (now - dt).total_seconds() / 60
+        if age > STALE_MINUTES or age < -15:
+            raise ValueError(f"{site}: API profile {dt.isoformat()} is not current (age {age:.0f} min)")
+        rows = parse_api(api_get("/915drwp/range", {
+            "drwp_identifier": site, "date": dt.strftime("%Y-%m-%dT%H:%M:%S")}))
+        if any(r.site != site or r.dt != dt for r in rows):
+            raise ValueError(f"{site}: API returned a different station or profile time")
+        if not any(r.speed_mps is not None and r.direction_deg is not None for r in rows):
+            raise ValueError(f"{site}: API profile has no valid winds")
+        return rows
+    with ThreadPoolExecutor(max_workers=min(5, len(sites))) as pool:
+        return [row for profile in pool.map(fetch_site, sites) for row in profile]
+
+
+def fetch_rows(sites, now):
+    try:
+        return fetch_api_profiles(sites, now), "Live 915 MHz DRWP API", None
+    except (requests.exceptions.RequestException, ValueError, KeyError, TypeError) as exc:
+        reason = str(exc)
+        print(f"Profiler API unavailable or not current: {reason}; using KSC archive fallback.")
+        return parse_csv(fetch_export()), "NASA KSC Spaceport Weather Archive (fallback)", reason
+
+
 def parse_dt(date_s: str, time_s: str) -> datetime | None:
     text = f"{date_s.strip()} {time_s.strip()}"
     for fmt in ("%m/%d/%Y %H:%M:%S", "%m/%d/%Y %H:%M",
@@ -245,13 +318,13 @@ def default_icon_url():
     if "/" in repo:
         owner, name = repo.split("/", 1)
         return f"http://{owner}.github.io/{name}/profiler_915_icon.png"
-    return "http://cyclonecizek.github.io/KSC_915MHz_Profiler_Placefile/profiler_915_icon.png"
+    return "http://cyclonecizek.github.io/ProfilerPlacefiles/profiler_915_icon.png"
 
 
 ICON_URL = default_icon_url()
 
 
-def build_hover(site: str, meta: dict, profile: dict, now: datetime) -> str:
+def build_hover(site: str, meta: dict, profile: dict, now: datetime, source="Live 915 MHz DRWP API") -> str:
     dt = profile["dt"]
     age = max(0, int((now - dt).total_seconds() / 60))
     rows = sorted(profile["rows"], key=lambda r: r.height_km)
@@ -282,14 +355,14 @@ def build_hover(site: str, meta: dict, profile: dict, now: datetime) -> str:
 
     lines += [
         "",
-        "Heights converted from archive km to ft.",
+        "Heights converted from source km to ft.",
         "Speeds converted from m/s to kt.",
-        "Source: NASA KSC Spaceport Weather Archive",
+        f"Source: {source}",
     ]
     return "\n".join(lines)
 
 
-def build_placefile(rows: list[Row], sites: dict, now: datetime):
+def build_placefile(rows: list[Row], sites: dict, now: datetime, source="Live 915 MHz DRWP API"):
     profiles = latest_profiles(rows)
     lines = [
         "; KSC 915 MHz Doppler Radar Wind Profilers",
@@ -299,7 +372,7 @@ def build_placefile(rows: list[Row], sites: dict, now: datetime):
         'Font: 1, 11, 1, "Arial"',
         "; Hover each profiler marker for the latest vertical wind profile.",
         "; Height displayed in feet; speed displayed in knots.",
-        "; Source data are not quality controlled by the archive.",
+        f"; Source: {source}",
     ]
     diag = []
 
@@ -313,7 +386,7 @@ def build_placefile(rows: list[Row], sites: dict, now: datetime):
             continue
 
         meta = sites[site]
-        hover = esc(build_hover(site, meta, profile, now))
+        hover = esc(build_hover(site, meta, profile, now, source))
 
         lines.append(f"Object: {meta['lat']:.8f}, {meta['lon']:.8f}")
         lines.append(f'Icon: 0, 0, 0, 1, 1, "{hover}"')
@@ -335,7 +408,7 @@ def build_placefile(rows: list[Row], sites: dict, now: datetime):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--input", help="local KSC 915 MHz profiler export CSV")
+    ap.add_argument("--input", help="local API JSON or legacy KSC profiler CSV")
     ap.add_argument("--sites", default="docs/ksc_915mhz_profiler_sites.csv")
     ap.add_argument("--output", default="docs/ksc_915mhz_profilers.txt")
     ap.add_argument("--json-output", default="docs/ksc_915mhz_profilers.json")
@@ -354,19 +427,25 @@ def main():
         print(build_export_url(start, end))
         return
 
-    text = (
-        Path(args.input).read_text(encoding="utf-8", errors="replace")
-        if args.input else fetch_export()
-    )
-    rows = parse_csv(text)
     sites = load_sites(Path(args.sites))
     now = datetime.now(timezone.utc)
-    placefile, diag = build_placefile(rows, sites, now)
+    fallback_reason = None
+    if args.input:
+        text = Path(args.input).read_text(encoding="utf-8-sig")
+        rows = parse_api(json.loads(text)) if text.lstrip().startswith("[") else parse_csv(text)
+        source = "Local profiler input"
+    else:
+        rows, source, fallback_reason = fetch_rows(sites, now)
+    placefile, diag = build_placefile(rows, sites, now, source)
+    if not diag:
+        raise ValueError("No current profiler markers; refusing to replace published output")
 
     Path(args.output).write_text(placefile, encoding="utf-8")
     Path(args.json_output).write_text(json.dumps({
         "generated_utc": now.isoformat(),
         "rows_parsed": len(rows),
+        "source": source,
+        "api_fallback_reason": fallback_reason,
         "profiles": diag,
     }, indent=2), encoding="utf-8")
 

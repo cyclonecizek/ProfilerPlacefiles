@@ -2,6 +2,13 @@ name: Update KSC 915 MHz Profiler Placefile
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "tests/**"
+      - "requirements.txt"
+      - ".github/workflows/update-profiler.yml"
   schedule:
     # KSC profiler estimates are nominally produced every 15 minutes.
     # Poll every 5 minutes so a newly published profile is picked up promptly.
@@ -32,6 +39,9 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
+
+      - name: Test API integration
+        run: python -m unittest discover -s tests
 
       - name: Generate profiler placefile
         env:
