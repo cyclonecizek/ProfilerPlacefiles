@@ -1,48 +1,40 @@
 {
-  "generated_utc": "2026-10-19T12:58:47.315373+00:00",
-  "rows_parsed": 1210,
+  "generated_utc": "2026-10-19T19:08:08.059383+00:00",
+  "rows_parsed": 808,
   "source": "NASA KSC Spaceport Weather Archive (fallback)",
-  "api_fallback_reason": "RWP0001: API profile 2026-08-05T11:15:00+00:00 is not current (age 108104 min)",
+  "api_fallback_reason": "RWP0001: API profile 2026-08-05T11:15:00+00:00 is not current (age 108473 min)",
   "profiles": [
     {
       "site": "RWP0001",
       "name": "South Cape",
-      "observation_utc": "2026-10-19T12:00:00+00:00",
-      "age_minutes": 58,
+      "observation_utc": "2026-10-19T18:00:00+00:00",
+      "age_minutes": 68,
       "rows_in_profile": 50,
-      "valid_wind_levels": 37
-    },
-    {
-      "site": "RWP0002",
-      "name": "False Cape",
-      "observation_utc": "2026-10-19T11:45:00+00:00",
-      "age_minutes": 73,
-      "rows_in_profile": 50,
-      "valid_wind_levels": 36
+      "valid_wind_levels": 20
     },
     {
       "site": "RWP0003",
       "name": "Merritt Island",
-      "observation_utc": "2026-10-19T12:00:00+00:00",
-      "age_minutes": 58,
+      "observation_utc": "2026-10-19T18:00:00+00:00",
+      "age_minutes": 68,
       "rows_in_profile": 51,
-      "valid_wind_levels": 37
+      "valid_wind_levels": 25
     },
     {
       "site": "RWP0004",
       "name": "Mosquito Lagoon",
-      "observation_utc": "2026-10-19T12:00:00+00:00",
-      "age_minutes": 58,
+      "observation_utc": "2026-10-19T18:00:00+00:00",
+      "age_minutes": 68,
       "rows_in_profile": 51,
-      "valid_wind_levels": 35
+      "valid_wind_levels": 27
     },
     {
       "site": "RWP0005",
       "name": "Ti-Co / Space Coast Regional Airport",
-      "observation_utc": "2026-10-19T12:00:00+00:00",
-      "age_minutes": 58,
+      "observation_utc": "2026-10-19T18:00:00+00:00",
+      "age_minutes": 68,
       "rows_in_profile": 50,
-      "valid_wind_levels": 40
+      "valid_wind_levels": 28
     }
   ]
 }
