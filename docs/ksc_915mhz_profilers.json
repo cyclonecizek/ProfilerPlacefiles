@@ -1,46 +1,46 @@
 {
-  "generated_utc": "2026-10-22T05:32:38.535457+00:00",
+  "generated_utc": "2026-10-22T10:33:01.546218+00:00",
   "rows_parsed": 1008,
   "source": "NASA KSC Spaceport Weather Archive (fallback)",
-  "api_fallback_reason": "HTTPSConnectionPool(host='codiapi-915drwp.rad.spaceforce.mil', port=443): Read timed out. (read timeout=30)",
+  "api_fallback_reason": "RWP0001: API profile 2026-08-05T11:15:00+00:00 is not current (age 112278 min)",
   "profiles": [
     {
       "site": "RWP0001",
       "name": "South Cape",
-      "observation_utc": "2026-10-22T04:30:00+00:00",
-      "age_minutes": 62,
+      "observation_utc": "2026-10-22T09:30:00+00:00",
+      "age_minutes": 63,
       "rows_in_profile": 50,
-      "valid_wind_levels": 28
+      "valid_wind_levels": 26
     },
     {
       "site": "RWP0002",
       "name": "False Cape",
-      "observation_utc": "2026-10-22T04:30:00+00:00",
-      "age_minutes": 62,
+      "observation_utc": "2026-10-22T09:30:00+00:00",
+      "age_minutes": 63,
       "rows_in_profile": 50,
-      "valid_wind_levels": 28
+      "valid_wind_levels": 27
     },
     {
       "site": "RWP0003",
       "name": "Merritt Island",
-      "observation_utc": "2026-10-22T04:30:00+00:00",
-      "age_minutes": 62,
+      "observation_utc": "2026-10-22T09:30:00+00:00",
+      "age_minutes": 63,
       "rows_in_profile": 51,
-      "valid_wind_levels": 26
+      "valid_wind_levels": 29
     },
     {
       "site": "RWP0004",
       "name": "Mosquito Lagoon",
-      "observation_utc": "2026-10-22T04:30:00+00:00",
-      "age_minutes": 62,
+      "observation_utc": "2026-10-22T09:30:00+00:00",
+      "age_minutes": 63,
       "rows_in_profile": 51,
       "valid_wind_levels": 25
     },
     {
       "site": "RWP0005",
       "name": "Ti-Co / Space Coast Regional Airport",
-      "observation_utc": "2026-10-22T04:30:00+00:00",
-      "age_minutes": 62,
+      "observation_utc": "2026-10-22T09:30:00+00:00",
+      "age_minutes": 63,
       "rows_in_profile": 50,
       "valid_wind_levels": 27
     }
