@@ -1,48 +1,48 @@
 {
-  "generated_utc": "2026-10-27T07:44:06.814236+00:00",
+  "generated_utc": "2026-10-27T13:37:19.738919+00:00",
   "rows_parsed": 1008,
   "source": "NASA KSC Spaceport Weather Archive (fallback)",
-  "api_fallback_reason": "RWP0001: API profile 2026-08-05T11:15:00+00:00 is not current (age 119309 min)",
+  "api_fallback_reason": "RWP0001: API profile 2026-08-05T11:15:00+00:00 is not current (age 119662 min)",
   "profiles": [
     {
       "site": "RWP0001",
       "name": "South Cape",
-      "observation_utc": "2026-10-27T06:30:00+00:00",
-      "age_minutes": 74,
+      "observation_utc": "2026-10-27T12:30:00+00:00",
+      "age_minutes": 67,
       "rows_in_profile": 50,
-      "valid_wind_levels": 36
+      "valid_wind_levels": 21
     },
     {
       "site": "RWP0002",
       "name": "False Cape",
-      "observation_utc": "2026-10-27T06:30:00+00:00",
-      "age_minutes": 74,
+      "observation_utc": "2026-10-27T12:30:00+00:00",
+      "age_minutes": 67,
       "rows_in_profile": 50,
-      "valid_wind_levels": 37
+      "valid_wind_levels": 38
     },
     {
       "site": "RWP0003",
       "name": "Merritt Island",
-      "observation_utc": "2026-10-27T06:30:00+00:00",
-      "age_minutes": 74,
+      "observation_utc": "2026-10-27T12:30:00+00:00",
+      "age_minutes": 67,
       "rows_in_profile": 51,
-      "valid_wind_levels": 36
+      "valid_wind_levels": 37
     },
     {
       "site": "RWP0004",
       "name": "Mosquito Lagoon",
-      "observation_utc": "2026-10-27T06:30:00+00:00",
-      "age_minutes": 74,
+      "observation_utc": "2026-10-27T12:30:00+00:00",
+      "age_minutes": 67,
       "rows_in_profile": 51,
-      "valid_wind_levels": 32
+      "valid_wind_levels": 31
     },
     {
       "site": "RWP0005",
       "name": "Ti-Co / Space Coast Regional Airport",
-      "observation_utc": "2026-10-27T06:30:00+00:00",
-      "age_minutes": 74,
+      "observation_utc": "2026-10-27T12:30:00+00:00",
+      "age_minutes": 67,
       "rows_in_profile": 50,
-      "valid_wind_levels": 38
+      "valid_wind_levels": 36
     }
   ]
 }
