@@ -1,48 +1,48 @@
 {
-  "generated_utc": "2026-10-29T02:46:18.715253+00:00",
-  "rows_parsed": 756,
+  "generated_utc": "2026-10-29T08:56:51.058771+00:00",
+  "rows_parsed": 1260,
   "source": "NASA KSC Spaceport Weather Archive (fallback)",
-  "api_fallback_reason": "RWP0001: API profile 2026-08-05T11:15:00+00:00 is not current (age 121891 min)",
+  "api_fallback_reason": "RWP0001: API profile 2026-08-05T11:15:00+00:00 is not current (age 122262 min)",
   "profiles": [
     {
       "site": "RWP0001",
       "name": "South Cape",
-      "observation_utc": "2026-10-29T01:30:00+00:00",
-      "age_minutes": 76,
+      "observation_utc": "2026-10-29T08:00:00+00:00",
+      "age_minutes": 56,
       "rows_in_profile": 50,
       "valid_wind_levels": 44
     },
     {
       "site": "RWP0002",
       "name": "False Cape",
-      "observation_utc": "2026-10-29T01:30:00+00:00",
-      "age_minutes": 76,
+      "observation_utc": "2026-10-29T08:00:00+00:00",
+      "age_minutes": 56,
       "rows_in_profile": 50,
-      "valid_wind_levels": 45
+      "valid_wind_levels": 46
     },
     {
       "site": "RWP0003",
       "name": "Merritt Island",
-      "observation_utc": "2026-10-29T01:30:00+00:00",
-      "age_minutes": 76,
+      "observation_utc": "2026-10-29T08:00:00+00:00",
+      "age_minutes": 56,
       "rows_in_profile": 51,
       "valid_wind_levels": 47
     },
     {
       "site": "RWP0004",
       "name": "Mosquito Lagoon",
-      "observation_utc": "2026-10-29T01:30:00+00:00",
-      "age_minutes": 76,
+      "observation_utc": "2026-10-29T08:00:00+00:00",
+      "age_minutes": 56,
       "rows_in_profile": 51,
-      "valid_wind_levels": 44
+      "valid_wind_levels": 38
     },
     {
       "site": "RWP0005",
       "name": "Ti-Co / Space Coast Regional Airport",
-      "observation_utc": "2026-10-29T01:30:00+00:00",
-      "age_minutes": 76,
+      "observation_utc": "2026-10-29T08:00:00+00:00",
+      "age_minutes": 56,
       "rows_in_profile": 50,
-      "valid_wind_levels": 46
+      "valid_wind_levels": 47
     }
   ]
 }
